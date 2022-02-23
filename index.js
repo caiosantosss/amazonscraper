@@ -19,7 +19,20 @@ app.get('/products/:productId', async (req, res) => {
 
   try {
     const response = await request(`${generateScraperUrl(api_key)}&url=https://www.amazon.co.jp/dp/${productId}`);
-    res.json(response);
+    res.json(JSON.parse(response));
+  } catch (error) {
+    res.json(error);
+  }
+});
+
+// GET Product Reviews
+app.get('/products/:productId/reviews', async (req, res) => {
+  const { productId } = req.params;
+  const { api_key } = req.query;
+
+  try {
+    const response = await request(`${generateScraperUrl(api_key)}&url=https://www.amazon.co.jp/product-reviews/${productId}`);
+    res.json(JSON.parse(response));
   } catch (error) {
     res.json(error);
   }
