@@ -51,4 +51,17 @@ app.get('/products/:productId/offers', async (req, res) => {
   }
 });
 
+// GET Search Results
+app.get('/search/:searchQuery', async (req, res) => {
+  const { searchQuery } = req.params;
+  const { api_key } = req.query;
+
+  try {
+    const response = await request(`${generateScraperUrl(api_key)}&url=https://www.amazon.co.jp/s?K=${searchQuery}`);
+    res.json(JSON.parse(response));
+  } catch (error) {
+    res.json(error);
+  }
+});
+
 app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
